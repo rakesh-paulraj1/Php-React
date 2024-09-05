@@ -5,7 +5,6 @@ header("Access-Control-Allow-Headers: Content-Type");
 
 include 'config.php';
 
-
 $data = json_decode(file_get_contents("php://input"), true);
 $email = $data['email'];
 $password = $data['password'];
@@ -16,11 +15,11 @@ if (empty($email) || empty($password)) {
 }
 
 
-$stmt = $conn->prepare("SELECT id, password_hash, name FROM users WHERE email = ?");
+$stmt = $conn->prepare("SELECT id, password_hash, name, role FROM users WHERE email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $stmt->store_result();
-$stmt->bind_result($id, $password_hash,$name);
+$stmt->bind_result($id, $password_hash, $name, $role);
 $stmt->fetch();
 
 if ($stmt->num_rows == 0 || !password_verify($password, $password_hash)) {
@@ -30,8 +29,21 @@ if ($stmt->num_rows == 0 || !password_verify($password, $password_hash)) {
     exit();
 }
 
+
+$token = bin2hex(random_bytes(16)); 
+
+
+$response = [
+    "token" => $token,
+    "user" => [
+        "id" => $id,
+        "name" => $name,
+        "role" => $role
+    ],
+    "success" => "Login successful."
+];
+
 $stmt->close();
-echo json_encode([ "name" => $name,
-    "id" => $id,"success" => "Login successful."]);
+echo json_encode($response);
 $conn->close();
 ?>

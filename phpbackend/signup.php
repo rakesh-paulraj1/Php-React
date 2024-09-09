@@ -5,19 +5,18 @@ header("Access-Control-Allow-Headers: Content-Type");
 
 include 'config.php';
 
-// Get the incoming data from the request body
+
 $data = json_decode(file_get_contents("php://input"), true);
 $email = $data['email'];
 $password = $data['password'];
-$name = $data['name']; // Include name field for signup
+$name = $data['name']; 
 
-// Validate inputs
+
 if (empty($email) || empty($password) || empty($name)) {
     echo json_encode(["error" => "Email, name, and password are required."]);
     exit();
 }
 
-// Check if the email already exists
 $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
@@ -30,17 +29,16 @@ if ($stmt->num_rows > 0) {
     exit();
 }
 
-// Hash the password
+
 $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-// Insert the new user into the database with role set to 'student' by default
+
 $stmt = $conn->prepare("INSERT INTO users (email, password_hash, name, role) VALUES (?, ?, ?, 'admin')");
 $stmt->bind_param("sss", $email, $password_hash, $name);
 
 if ($stmt->execute()) {
-    // Respond with success message
     $newUserId = $stmt->insert_id;
-    $token = bin2hex(random_bytes(16)); // Generate a token for authentication (optional)
+    $token = bin2hex(random_bytes(16)); 
 
     echo json_encode([
         "token" => $token,

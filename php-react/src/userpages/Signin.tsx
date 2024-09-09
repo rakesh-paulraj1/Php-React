@@ -17,12 +17,14 @@ export const UnifiedSigninPage = () => {
     async function handleSignin() {
         try {
             const response = await axios.post(`http://localhost/api/signin.php`, postInputs);
-            console.log(postInputs);
-            const { token, user,id } = response.data;
+            
+            const { token, user, } = response.data;
             console.log(response.data);
-            localStorage.setItem("id",id)
+          
+            localStorage.setItem("id",user.id)
             localStorage.setItem("token", token);
             localStorage.setItem("name", user.name);
+localStorage.setItem("email", user.email);
 
            
             if (user.role === 'admin') {
@@ -63,9 +65,9 @@ export const UnifiedSigninPage = () => {
                 <button
                     onClick={handleSignin}
                     type="button"
+
                     className="mt-8 h-9 w-full animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 my-8"
-                >
-                    SignIn
+                >SignIn
                 </button>
             </div>
         </div>

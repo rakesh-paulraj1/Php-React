@@ -5,6 +5,7 @@ import Dashboard from './userpages/Dashboard'
 import Studentdashboard from './userpages/Studentdashboard'
 import Adduser from './userpages/Adduser'
 import { UnifiedSigninPage } from './userpages/Signin'
+import Upadtestudent from './userpages/Upadtestudent'
 
 const App: React.FC = () => {
   
@@ -16,6 +17,7 @@ const App: React.FC = () => {
   <Route path="/admindashboard" element={<Dashboard/>}></Route>
   <Route path="/studentdashboard" element={<Studentdashboard/>}></Route>
   <Route path="/addstudent" element={<Adduser/>}></Route>
+  <Route path="/updatestudent" element={<Upadtestudent/>}></Route>
 </Routes>
       </BrowserRouter>
   )

@@ -1,4 +1,4 @@
-// Define the type for LabelledInput props if not defined
+
 interface LabelledInputType {
     label: string;
     placeholder: string;
@@ -25,12 +25,38 @@ const AddUser = () => {
         email: '',
       
     });
+    const validateInputs = () => {
+        const { email, password,name } = postInputs;
 
+      
+        if (!email.includes('@') || email.length < 8) {
+            alert('Please enter a valid email with "@" and at least 8 characters.');
+            return false;
+        }
+            
+        
+        if (password.length < 8) {
+            alert('Password must be at least 8 characters long.');
+            return false;
+        }
+        const usernameRegex = /^[A-Za-z]+$/;
+        if (!usernameRegex.test(name)) {
+            alert('Username must not contain numbers and should only include letters.');
+            return false;
+        }
+
+        return true;
+    };
     const addUser = async () => {
         try {
             if (!postInputs.name || !postInputs.password || !postInputs.email) {
                 alert("Please fill in all required fields.");
                 return;
+            }
+            if (!validateInputs()) {
+              
+               
+                return ;
             }
 
             
@@ -52,8 +78,18 @@ const AddUser = () => {
 
     return (
         <div>
-            <div className="font-bold text-3xl p-4 text-black-400">
-                Enter Student details
+             <div className="flex items-center p-4"> 
+                <button
+                    onClick={() => navigate('/admindashboard')} 
+                    type="button"
+                    className="mr-4 rounded-lg bg-gray-500 py-2 px-4 text-center font-sans text-xs font-bold uppercase text-white shadow-md hover:bg-gray-600 transition-all"
+                >
+                    Back
+                </button>
+
+                <div className="font-bold text-3xl text-black-400">
+                    Enter Student details
+                </div>
             </div>
 
             <LabelledInput
@@ -104,6 +140,8 @@ const AddUser = () => {
             >
                 Add User
             </button>
+
+            
         </div>
     );
 };

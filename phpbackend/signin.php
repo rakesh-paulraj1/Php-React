@@ -38,7 +38,8 @@ $response = [
     "user" => [
         "id" => $id,
         "name" => $name,
-        "role" => $role
+        "role" => $role,
+        "email"=> $email
     ],
     "success" => "Login successful."
 ];
